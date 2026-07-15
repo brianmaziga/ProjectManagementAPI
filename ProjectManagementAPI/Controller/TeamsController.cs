@@ -17,6 +17,17 @@ public class TeamsController : ControllerBase
         _connectionString = config.GetConnectionString("DefaultConnection")!;
     }
 
+    // GET: api/teams
+    [HttpGet]
+    public async Task<IActionResult> GetAllTeams()
+    {
+        using var connection = new SqlConnection(_connectionString);
+        var teams = await connection.QueryAsync<Team>(
+            "sp_GetAllTeams",
+            commandType: CommandType.StoredProcedure);
+        return Ok(teams);
+    }
+
     // GET: api/teams/project/1
     [HttpGet("project/{projectId}")]
     public async Task<IActionResult> GetTeamsByProject(int projectId)

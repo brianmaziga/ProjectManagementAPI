@@ -103,7 +103,7 @@ public class Mutation
     }
 
     public async Task<string> MarkNotificationAsRead(
-        int notificationId,
+        int notificationId, int userId,
         [Service] IConfiguration config)
     {
         using var connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
