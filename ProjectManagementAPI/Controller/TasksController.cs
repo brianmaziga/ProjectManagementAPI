@@ -2,7 +2,6 @@
 using Microsoft.Data.SqlClient;
 using Dapper;
 using ProjectManagementAPI.Models;
-
 namespace ProjectManagementAPI.Controllers;
 
 [ApiController]
@@ -10,12 +9,20 @@ namespace ProjectManagementAPI.Controllers;
 public class TasksController : ControllerBase
 {
     private readonly string _connectionString;
-
     public TasksController(IConfiguration config)
     {
         _connectionString = config.GetConnectionString("DefaultConnection")!;
     }
-
+    // GET: api/tasks
+    [HttpGet]
+    public async Task<IActionResult> GetAllTasks()
+    {
+        using var connection = new SqlConnection(_connectionString);
+        var tasks = await connection.QueryAsync<TaskItem>(
+            "sp_GetAllTasks",
+            commandType: System.Data.CommandType.StoredProcedure);
+        return Ok(tasks);
+    }
     // GET: api/tasks/project/5
     [HttpGet("project/{projectId}")]
     public async Task<IActionResult> GetTasksByProject(int projectId)
@@ -27,7 +34,6 @@ public class TasksController : ControllerBase
             commandType: System.Data.CommandType.StoredProcedure);
         return Ok(tasks);
     }
-
     // POST: api/tasks
     [HttpPost]
     public async Task<IActionResult> CreateTask([FromBody] CreateTaskDto dto)
@@ -39,7 +45,6 @@ public class TasksController : ControllerBase
             commandType: System.Data.CommandType.StoredProcedure);
         return Ok(new { message = "Task created successfully" });
     }
-
     // PUT: api/tasks/5/status
     [HttpPut("{id}/status")]
     public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] UpdateTaskStatusDto dto)
@@ -51,7 +56,6 @@ public class TasksController : ControllerBase
             commandType: System.Data.CommandType.StoredProcedure);
         return Ok(new { message = "Task status updated successfully" });
     }
-
     // DELETE: api/tasks/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTask(int id)

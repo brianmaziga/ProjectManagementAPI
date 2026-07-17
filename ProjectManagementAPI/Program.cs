@@ -114,7 +114,7 @@ if (app.Environment.IsDevelopment())
 
 
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Disabled for local mobile testing over HTTP
 
 
 
