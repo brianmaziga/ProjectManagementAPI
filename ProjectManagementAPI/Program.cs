@@ -38,7 +38,8 @@ builder.Services.AddCors(options =>
                 "http://localhost:5173",
                 "https://localhost:5173",
                 "http://localhost:5174",
-                "https://localhost:5174"
+                "https://localhost:5174",
+                "https://sweet-project-board-87ea8e88.vercel.app"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
