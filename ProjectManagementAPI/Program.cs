@@ -30,19 +30,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:8080",
-                "https://localhost:8080",
-                "http://localhost:8081",
-                "https://localhost:8081",
-                "http://localhost:5173",
-                "https://localhost:5173",
-                "http://localhost:5174",
-                "https://localhost:5174",
-                "https://sweet-project-board-87ea8e88.vercel.app"
-            )
+        policy
+            .SetIsOriginAllowed(origin =>
+            {
+                // Allow localhost and any vercel.app domain
+                return origin.StartsWith("http://localhost") ||
+                       origin.StartsWith("https://localhost") ||
+                       origin.EndsWith(".vercel.app");
+            })
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
