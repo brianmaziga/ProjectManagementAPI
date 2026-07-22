@@ -5,3 +5,5 @@ obj/
 appsettings.Development.json
 
 ProjectManagementAPI/appsettings.Development.json
+
+ProjectManagementAPI/appsettings.Production.json
